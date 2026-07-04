@@ -1,0 +1,20 @@
+{
+  "name": "Sugar Shack",
+  "short_name": "Sugar Shack",
+  "description": "A cyber-noir social deduction story game about coded drinks, civilian complications, and the cost of a clean pour.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#100d12",
+  "theme_color": "#100d12",
+  "orientation": "portrait-primary",
+  "categories": ["games", "entertainment"],
+  "icons": [
+    {
+      "src": "assets/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
