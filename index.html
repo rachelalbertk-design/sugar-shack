@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sugar Shack is a cyber-noir social deduction story game about coded drinks, civilian complications, and the cost of a clean pour."
+    />
+    <meta name="theme-color" content="#100d12" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Sugar Shack" />
+    <title>Sugar Shack</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="assets/app-icon.svg" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="marquee" aria-label="Sugar Shack storefront and hidden lounge">
+        <div class="rain-pane"></div>
+        <div class="cover-shop">
+          <p class="eyebrow">99¢ Studios Drop 01</p>
+          <h1>Sugar Shack</h1>
+          <p class="tagline">Cute upstairs. Compromised downstairs.</p>
+        </div>
+        <div class="storefront-props" aria-hidden="true">
+          <div class="pink-box">DAY-OLD</div>
+          <div class="clock-face">12:07 AM</div>
+          <div class="receipt-printer">ORDER #404</div>
+          <div class="elevator-hint">B2</div>
+        </div>
+      </section>
+
+      <section id="app" class="game-card" aria-live="polite"></section>
+    </main>
+
+    <script src="gameData.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
