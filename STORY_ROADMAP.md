@@ -59,7 +59,7 @@ Pressure: a celebration, a photo, or a social post makes privacy feel like a thi
 
 ### Shift 5 - The Kindness Audit
 
-Status: planned.
+Status: playable and ready for testing.
 
 Function: reveal Director Vale through a recorded message.
 
@@ -67,7 +67,7 @@ Pressure: kindness becomes measurable, weaponized, and suspiciously reasonable.
 
 ### Shift 6 - The House Leak
 
-Status: planned.
+Status: playable and ready for testing.
 
 Function: let Director Vale speak through the system and test the player's loyalty to the house.
 
@@ -75,7 +75,7 @@ Pressure: Sugar Shack itself may be compromised, and no one can tell whether sec
 
 ### Shift 7 - Last Call for Privacy
 
-Status: planned.
+Status: playable and ready for testing.
 
 Function: final bargain, final receipt, final psychology debrief.
 
@@ -83,7 +83,7 @@ Pressure: Director Vale offers safety through surveillance. The player decides w
 
 ## Launch Acceptance
 
-The story is launch-ready when:
+The story is prototype-complete when:
 
 - all seven shifts are playable end to end;
 - earlier flags affect later scenes in visible, story-first ways;
@@ -92,3 +92,5 @@ The story is launch-ready when:
 - every shift has at least four meaningful final outcomes;
 - the final debrief reflects the player's whole run, not only Shift 7;
 - the game can be replayed with noticeably different routes and receipts.
+
+Current status: the seven-shift prototype is playable. The remaining launch work is editing, balance, accessibility testing, device testing, and native packaging.
