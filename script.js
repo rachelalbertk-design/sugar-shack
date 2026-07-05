@@ -18,6 +18,9 @@
     2: { title: "The Glass Orchid", clockScene: "shift2_clocked" },
     3: { title: "The Memory Tab", clockScene: "shift3_clocked" },
     4: { title: "Two Birthdays", clockScene: "shift4_clocked" },
+    5: { title: "The Kindness Audit", clockScene: "shift5_clocked" },
+    6: { title: "The House Leak", clockScene: "shift6_clocked" },
+    7: { title: "Last Call for Privacy", clockScene: "shift7_clocked" },
   };
   const defaultSettings = {
     textSize: "standard",
@@ -147,9 +150,9 @@
   }
 
   function continueToNextShift() {
-    if (state.currentShift >= 4) {
+    if (state.currentShift >= 7) {
       currentSceneId = "title";
-      lastResponse = "The next shift is still being written beside a candle that refuses to go out.";
+      lastResponse = "The week is printed. Sugar Shack waits for a new run and a different kind of mercy.";
       render();
       return;
     }
@@ -164,8 +167,14 @@
       lastResponse = "Mara keeps your tab open. The second shift waits under fresh ice.";
     } else if (state.currentShift === 3) {
       lastResponse = "The receipt printer remembers your hands. The third shift waits in warm ink.";
-    } else {
+    } else if (state.currentShift === 4) {
       lastResponse = "The paper moons are already hanging. The fourth shift waits for someone to sing too loudly.";
+    } else if (state.currentShift === 5) {
+      lastResponse = "The silver kindness cards are already on the tables. The fifth shift waits with a polite smile.";
+    } else if (state.currentShift === 6) {
+      lastResponse = "The router lights are breathing wrong. The sixth shift waits inside the walls.";
+    } else {
+      lastResponse = "The house is full before last call. The final shift waits for the room to answer.";
     }
     currentSceneId = getShiftInfo(state.currentShift).clockScene;
     render();
@@ -676,15 +685,16 @@
 
   function getStageIndex() {
     if (["studio_intro", "title", "job_listing", "donut_shop", "elevator_receipt", "elevator_down"].includes(currentSceneId)) return 0;
-    if (currentSceneId.indexOf("interview_") === 0 || ["lounge_arrival", "punchcard", "shift_clocked", "shift2_clocked", "shift3_clocked", "shift4_clocked"].includes(currentSceneId)) return 1;
-    if (["shift_opening", "patron_intro", "coded_order", "chrome_reacts", "shift2_opening", "shift2_patron_intro", "shift2_coded_order", "shift2_civilians_enter", "shift3_opening", "shift3_patron_intro", "shift3_coded_order", "shift3_civilians_enter", "shift4_opening", "shift4_patron_intro", "shift4_coded_order", "shift4_civilians_enter"].includes(currentSceneId)) return 2;
-    if (["veil_break", "snoop_menu", "veil_returns", "host_signal", "final_decision", "shift2_confusion", "shift2_snoop_menu", "shift2_convergence", "shift2_host_signal", "shift2_final_decision", "shift3_confusion", "shift3_snoop_menu", "shift3_convergence", "shift3_host_signal", "shift3_final_decision", "shift4_confusion", "shift4_snoop_menu", "shift4_convergence", "shift4_host_signal", "shift4_final_decision"].includes(currentSceneId)) return 3;
+    if (currentSceneId.indexOf("interview_") === 0 || ["lounge_arrival", "punchcard"].includes(currentSceneId) || currentSceneId.endsWith("_clocked")) return 1;
+    if (["shift_opening", "patron_intro", "coded_order", "chrome_reacts"].includes(currentSceneId) || /^shift\d+_(opening|patron_intro|coded_order|civilians_enter)$/.test(currentSceneId)) return 2;
+    if (["veil_break", "snoop_menu", "veil_returns", "host_signal", "final_decision"].includes(currentSceneId) || /^shift\d+_(confusion|snoop_menu|convergence|host_signal|final_decision)$/.test(currentSceneId)) return 3;
     return 4;
   }
 
   function getSceneLabel() {
     if (currentSceneId === "receipt_debrief") return "End Tab";
     if (currentSceneId === "psychology_debrief") return "Reflection";
+    if (currentSceneId === "final_story_debrief") return "Final Debrief";
     if (currentSceneId === "studio_intro") return "Studio";
     const scene = scenes[currentSceneId];
     if (scene && scene.endingLabel) return scene.endingLabel;
@@ -693,7 +703,7 @@
   }
 
   function getCaseSignal() {
-    if (currentSceneId === "receipt_debrief" || currentSceneId === "psychology_debrief" || currentSceneId.indexOf("result_") === 0) {
+    if (currentSceneId === "receipt_debrief" || currentSceneId === "psychology_debrief" || currentSceneId === "final_story_debrief" || currentSceneId.indexOf("result_") === 0) {
       return getEarlyCodename();
     }
 
@@ -731,6 +741,18 @@
     if (state.flags.tally_post_seen) items.push({ title: "Phone Preview", text: "The caption guessed the code phrase before the room admitted it was a code." });
     if (state.flags.birthday_name_corrected) items.push({ title: "Name Card Swap", text: "The public cake kept the right name. The private signal kept none." });
     if (state.flags.birthday_song_stopped) items.push({ title: "Held Chorus", text: "The song stopped before a roomful of witnesses could turn care into proof." });
+    if (state.flags.harmony_recording_seen) items.push({ title: "Vale Recording", text: "Director Vale made surveillance sound like community care before speaking live." });
+    if (state.flags.found_kindness_score) items.push({ title: "Kindness Score", text: "The audit counted helper, helped, witness, and delay as if care were a ledger." });
+    if (state.flags.found_tip_camera) items.push({ title: "Silver Card Lens", text: "The kindness card watched the person being helped more clearly than the person helping." });
+    if (state.flags.kindness_receipt_redacted) items.push({ title: "Redacted Help", text: "The audit kept its shape after Pax's name left its teeth." });
+    if (state.flags.vale_direct_signal) items.push({ title: "Vale Live", text: "Director Vale stopped being a recording and spoke through the house itself." });
+    if (state.flags.found_router_heat) items.push({ title: "Hot Router", text: "The leak pulsed when Vale said safe, like the word was a command." });
+    if (state.flags.found_backdoor_log) items.push({ title: "Backdoor Log", text: "The route used a real house code for a request the house never made." });
+    if (state.flags.decoy_leak_sent) items.push({ title: "False Route", text: "The leak accepted a believable lie and carried it toward the wrong door." });
+    if (state.flags.privacy_bargain_seen) items.push({ title: "Vale's Bargain", text: "Safety arrived as a roster, a promise, and a price." });
+    if (state.flags.found_all_names_list) items.push({ title: "The Roster", text: "The final list held names, old names, blanks, and guesses labeled like care." });
+    if (state.flags.final_consent_taken) items.push({ title: "Uneven Consent", text: "The room did not agree. That was the first honest answer." });
+    if (state.flags.last_call_blackout) items.push({ title: "Breaker Option", text: "The final choice included darkness, not as an escape, but as refusal." });
 
     clueLog.slice(-5).forEach(function (clue, index) {
       items.push({ title: "Field Note " + String(index + 1).padStart(2, "0"), text: clue });
@@ -858,6 +880,12 @@
 
     if (currentSceneId === "psychology_debrief") {
       renderPsychologyDebrief();
+      finishRender();
+      return;
+    }
+
+    if (currentSceneId === "final_story_debrief") {
+      renderFinalStoryDebrief();
       finishRender();
       return;
     }
@@ -1011,6 +1039,35 @@
     return item;
   }
 
+  function numberedShift() {
+    const match = currentSceneId.match(/^shift(\d+)_/);
+    if (match) return Number(match[1]);
+    if (currentSceneId.indexOf("shift_") === 0 || currentSceneId === "shift_clocked") return 1;
+    return 0;
+  }
+
+  function shiftVisualLabel() {
+    const number = numberedShift();
+    if (number === 7) return "PRIVACY";
+    if (number === 6) return "LEAK";
+    if (number === 5) return "AUDIT";
+    if (number === 4) return "CANDLE";
+    if (number === 3) return "TAB";
+    if (number === 2) return "ORCHID";
+    return "NO EGG";
+  }
+
+  function shiftMenuLabel() {
+    const number = numberedShift();
+    if (number === 7) return "LAST CALL";
+    if (number === 6) return "HOUSE LEAK";
+    if (number === 5) return "KINDNESS AUDIT";
+    if (number === 4) return "TWO BIRTHDAYS";
+    if (number === 3) return "MEMORY TAB";
+    if (number === 2) return "GLASS ORCHID";
+    return "WHISKEY RAMEN";
+  }
+
   function renderSceneVisual(scene) {
     if (currentSceneId === "title") {
       const frame = makeArtFrame("storefront", "Cute upstairs. Dangerous downstairs.");
@@ -1069,8 +1126,8 @@
       return frame;
     }
 
-    if (currentSceneId === "punchcard" || currentSceneId === "shift_clocked" || currentSceneId === "shift2_clocked" || currentSceneId === "shift3_clocked" || currentSceneId === "shift4_clocked") {
-      const isClocked = currentSceneId === "shift_clocked" || currentSceneId === "shift2_clocked" || currentSceneId === "shift3_clocked" || currentSceneId === "shift4_clocked";
+    if (currentSceneId === "punchcard" || currentSceneId.endsWith("_clocked")) {
+      const isClocked = currentSceneId.endsWith("_clocked");
       const frame = makeArtFrame("punchclock", isClocked ? "A tiny verdict, printed in pink." : "Temporary access is still access.");
       addArt(frame, "timecard-stack");
       addArt(frame, "punchclock-body");
@@ -1085,10 +1142,16 @@
       return frame;
     }
 
-    if (currentSceneId === "lounge_arrival" || currentSceneId === "shift_opening" || currentSceneId === "shift2_opening" || currentSceneId === "shift3_opening" || currentSceneId === "shift4_opening") {
+    if (currentSceneId === "lounge_arrival" || currentSceneId === "shift_opening" || /^shift\d+_opening$/.test(currentSceneId)) {
       const frame = makeArtFrame(
         "lounge",
-        currentSceneId === "shift4_opening"
+        numberedShift() === 7
+          ? "Every glass in the room remembers a choice."
+          : numberedShift() === 6
+            ? "The walls have started listening back."
+            : numberedShift() === 5
+              ? "Kindness cards make gratitude look expensive."
+              : currentSceneId === "shift4_opening"
           ? "Paper moons make public joy look dangerous."
           : currentSceneId === "shift3_opening"
           ? "The receipt printer remembers too much."
@@ -1105,7 +1168,7 @@
       addArt(frame, "booth-shape booth-a");
       addArt(frame, "booth-shape booth-b");
       addArt(frame, "privacy-glass");
-      addArt(frame, "menu-scribble", currentSceneId === "shift4_opening" ? "TWO BIRTHDAYS" : currentSceneId === "shift3_opening" ? "MEMORY TAB" : currentSceneId === "shift2_opening" ? "GLASS ORCHID" : "WHISKEY RAMEN");
+      addArt(frame, "menu-scribble", shiftMenuLabel());
       return frame;
     }
 
@@ -1121,9 +1184,15 @@
       return frame;
     }
 
-    if (["patron_intro", "coded_order", "chrome_reacts", "host_signal", "final_decision", "shift2_patron_intro", "shift2_coded_order", "shift2_civilians_enter", "shift2_host_signal", "shift2_final_decision", "shift3_patron_intro", "shift3_coded_order", "shift3_civilians_enter", "shift3_host_signal", "shift3_final_decision", "shift4_patron_intro", "shift4_coded_order", "shift4_civilians_enter", "shift4_host_signal", "shift4_final_decision"].includes(currentSceneId)) {
+    if (["patron_intro", "coded_order", "chrome_reacts", "host_signal", "final_decision"].includes(currentSceneId) || /^shift\d+_(patron_intro|coded_order|civilians_enter|host_signal|final_decision)$/.test(currentSceneId)) {
       let caption = "Booth 3 pretends not to be a stage.";
-      if (currentSceneId === "shift4_host_signal") {
+      if (numberedShift() === 7) {
+        caption = "Every protected person is visible enough to matter.";
+      } else if (numberedShift() === 6) {
+        caption = "The speaker makes the booth feel owned.";
+      } else if (numberedShift() === 5) {
+        caption = "The kindness card shines like a tiny camera.";
+      } else if (currentSceneId === "shift4_host_signal") {
         caption = "One candle waits between celebration and evidence.";
       } else if (currentSceneId === "host_signal" || currentSceneId === "shift2_host_signal") {
         caption = "The final object arrives heavier than it looks.";
@@ -1144,16 +1213,22 @@
       addArt(frame, "chrome-silhouette");
       addArt(frame, "chrome-jacket-shine");
       addArt(frame, "table-ellipse");
-      addArt(frame, "ramen-glass", currentSceneId.indexOf("shift4_") === 0 ? "CANDLE" : currentSceneId.indexOf("shift3_") === 0 ? "TAB" : currentSceneId.indexOf("shift2_") === 0 ? "ORCHID" : currentSceneId === "host_signal" ? "TWO GLASSES" : "NO EGG");
+      addArt(frame, "ramen-glass", currentSceneId === "host_signal" ? "TWO GLASSES" : shiftVisualLabel());
       addArt(frame, "static-lines");
       addArt(frame, state.flags.noticed_chrome_reaction || state.flags.chrome_is_suspected ? "watch-line active" : "watch-line");
       return frame;
     }
 
-    if (["veil_break", "snoop_menu", "veil_returns", "shift2_confusion", "shift2_snoop_menu", "shift2_convergence", "shift3_confusion", "shift3_snoop_menu", "shift3_convergence", "shift4_confusion", "shift4_snoop_menu", "shift4_convergence"].includes(currentSceneId)) {
+    if (["veil_break", "snoop_menu", "veil_returns"].includes(currentSceneId) || /^shift\d+_(confusion|snoop_menu|convergence)$/.test(currentSceneId)) {
       const frame = makeArtFrame(
         "tabletop",
-        currentSceneId.indexOf("shift4_") === 0
+        numberedShift() === 7
+          ? "One roster, too many lives."
+          : numberedShift() === 6
+            ? "One label, one router, one door that should not exist."
+            : numberedShift() === 5
+              ? "One good deed, now printed with teeth."
+              : currentSceneId.indexOf("shift4_") === 0
           ? "Two cakes, one name too many."
           : currentSceneId.indexOf("shift3_") === 0
           ? "Two receipts, one missing night."
@@ -1162,10 +1237,10 @@
             : "Every object is either evidence or bait."
       );
       addArt(frame, "tabletop-surface");
-      addArt(frame, "close-glass", currentSceneId.indexOf("shift4_") === 0 ? "CAKE" : currentSceneId.indexOf("shift3_") === 0 ? "TAB" : currentSceneId.indexOf("shift2_") === 0 ? "REAL" : state.flags.found_glass_residue ? "TWO TRACES" : "EMPTY");
-      addArt(frame, "close-napkin", currentSceneId.indexOf("shift4_") === 0 ? "PHONE" : currentSceneId.indexOf("shift3_") === 0 ? "AUDIT" : currentSceneId.indexOf("shift2_") === 0 ? "CAMERA" : state.flags.found_privacy_chip ? "PINK DOTS" : "SEALED");
-      addArt(frame, "close-receipt", currentSceneId.indexOf("shift4_") === 0 ? "NOON" : currentSceneId.indexOf("shift3_") === 0 ? "12:40" : currentSceneId.indexOf("shift2_") === 0 ? "HARMONY" : state.flags.found_receipt_404 ? "12:40" : "#404");
-      addArt(frame, "close-sleeve", currentSceneId.indexOf("shift4_") === 0 ? "SONG" : currentSceneId.indexOf("shift3_") === 0 ? "ERASED" : currentSceneId.indexOf("shift2_") === 0 ? "DECOY" : state.flags.snooped_sleeve ? "DISTURBED" : "SLEEVE");
+      addArt(frame, "close-glass", numberedShift() === 7 ? "ROSTER" : numberedShift() === 6 ? "ROUTER" : numberedShift() === 5 ? "SCORE" : currentSceneId.indexOf("shift4_") === 0 ? "CAKE" : currentSceneId.indexOf("shift3_") === 0 ? "TAB" : currentSceneId.indexOf("shift2_") === 0 ? "REAL" : state.flags.found_glass_residue ? "TWO TRACES" : "EMPTY");
+      addArt(frame, "close-napkin", numberedShift() === 7 ? "NAMES" : numberedShift() === 6 ? "LABEL" : numberedShift() === 5 ? "CARD" : currentSceneId.indexOf("shift4_") === 0 ? "PHONE" : currentSceneId.indexOf("shift3_") === 0 ? "AUDIT" : currentSceneId.indexOf("shift2_") === 0 ? "CAMERA" : state.flags.found_privacy_chip ? "PINK DOTS" : "SEALED");
+      addArt(frame, "close-receipt", numberedShift() === 7 ? "OPT IN" : numberedShift() === 6 ? "BACK" : numberedShift() === 5 ? "HELP" : currentSceneId.indexOf("shift4_") === 0 ? "NOON" : currentSceneId.indexOf("shift3_") === 0 ? "12:40" : currentSceneId.indexOf("shift2_") === 0 ? "HARMONY" : state.flags.found_receipt_404 ? "12:40" : "#404");
+      addArt(frame, "close-sleeve", numberedShift() === 7 ? "LAST" : numberedShift() === 6 ? "DOOR" : numberedShift() === 5 ? "LENS" : currentSceneId.indexOf("shift4_") === 0 ? "SONG" : currentSceneId.indexOf("shift3_") === 0 ? "ERASED" : currentSceneId.indexOf("shift2_") === 0 ? "DECOY" : state.flags.snooped_sleeve ? "DISTURBED" : "SLEEVE");
       addArt(frame, "close-chip");
       addArt(frame, "sugar-crystal");
       return frame;
@@ -1244,6 +1319,30 @@
       text += "\n\nThe civilians arrive laughing. You remember Theo's tired joke and how fast a harmless request can become a record.";
     }
 
+    if (currentSceneId === "shift5_opening" && state.flags.birthday_signal_altered) {
+      text += "\n\nAfter Two Birthdays, public care feels less innocent. Tonight, Harmony has printed cards for it.";
+    }
+
+    if (currentSceneId === "shift5_civilians_enter" && state.flags.tally_redirected) {
+      text += "\n\nTally's lowered phone taught you something: attention can be turned before it has to be broken.";
+    }
+
+    if (currentSceneId === "shift6_opening" && state.flags.kindness_receipt_redacted) {
+      text += "\n\nAfter the Kindness Audit, even the blank forms look suspicious. The house seems to agree.";
+    }
+
+    if (currentSceneId === "shift6_civilians_enter" && state.flags.pax_protected) {
+      text += "\n\nNash's delivery smile reminds you of Pax before the audit named them. Civilian is not the same as harmless.";
+    }
+
+    if (currentSceneId === "shift7_opening" && state.flags.network_cut) {
+      text += "\n\nAfter the Dead Switch, the room trusts darkness more than it used to. That is not the same as peace.";
+    }
+
+    if (currentSceneId === "shift7_civilians_enter" && state.flags.final_consent_taken) {
+      text += "\n\nThe week has made one thing clear: consent sounds messy because people are.";
+    }
+
     return text;
   }
 
@@ -1300,6 +1399,30 @@
 
     if (currentSceneId === "shift4_final_decision" && state.flags.tally_post_seen) {
       return "Echo: Tally's caption guessed the code phrase too quickly. The phone is not neutral just because it smiles.";
+    }
+
+    if (currentSceneId === "shift5_final_decision" && state.flags.mara_kindness_warning) {
+      return "Echo: Mara's finger over the camera dot meant proof can save a crowd and still harm the first person it names.";
+    }
+
+    if (currentSceneId === "shift5_final_decision" && state.flags.found_tip_camera) {
+      return "Echo: The silver card saw Pax more clearly than Rina. The audit knows how to watch need.";
+    }
+
+    if (currentSceneId === "shift6_final_decision" && state.flags.mara_leak_warning) {
+      return "Echo: Mara's breaker tap meant follow the leak only if you can lie better than it listens.";
+    }
+
+    if (currentSceneId === "shift6_final_decision" && state.flags.found_backdoor_log) {
+      return "Echo: The route used a real house code for a false request. Someone wore the house's voice badly.";
+    }
+
+    if (currentSceneId === "shift7_final_decision" && state.flags.mara_final_warning) {
+      return "Echo: Mara's open hand meant do not save privacy by stealing choice.";
+    }
+
+    if (currentSceneId === "shift7_final_decision" && state.flags.found_all_names_list) {
+      return "Echo: Vale's roster is useful because it is dangerous. That is the whole bargain.";
     }
 
     return "";
@@ -1700,6 +1823,18 @@
   }
 
   function signatureMove() {
+    if (state.flags.privacy_final_refused) return "Destroyed the roster and left safety unfinished";
+    if (state.flags.privacy_final_delayed) return "Sealed the roster until consent could catch up";
+    if (state.flags.privacy_final_altered) return "Gave Vale only the names people chose and routes that lied";
+    if (state.flags.privacy_final_served) return "Accepted the guarantee and the record it required";
+    if (state.flags.house_leak_refused) return "Cut the network before Vale could map the house";
+    if (state.flags.house_leak_delayed) return "Held the leak open just long enough to hear it answer";
+    if (state.flags.house_leak_altered || state.flags.decoy_leak_sent) return "Fed the leak a believable wrong door";
+    if (state.flags.house_leak_served) return "Followed the true leak and paid for the map";
+    if (state.flags.kindness_audit_refused) return "Dissolved the score before kindness became ownership";
+    if (state.flags.kindness_audit_delayed) return "Held the credit until help could ask permission";
+    if (state.flags.kindness_audit_altered || state.flags.kindness_receipt_redacted) return "Preserved the proof and removed the person";
+    if (state.flags.kindness_audit_served) return "Printed the ugly proof without softening it";
     if (state.flags.birthday_signal_refused) return "Killed the witness list before the name could land";
     if (state.flags.birthday_signal_delayed) return "Held the song until everyone could choose";
     if (state.flags.birthday_signal_altered || state.flags.birthday_name_corrected) return "Hid the private candle inside the public party";
@@ -1775,6 +1910,27 @@
   }
 
   function civiliansShielded() {
+    if (state.currentShift === 7) {
+      if (state.flags.privacy_final_refused && state.flags.returns_protected) return "The room stayed unlisted and chose its own risk";
+      if (state.flags.privacy_final_altered && state.flags.final_consent_taken) return "People who opted in were findable; everyone else stayed difficult";
+      if (state.flags.privacy_final_delayed) return "The room kept the right to answer later";
+      if (state.flags.privacy_final_served) return "Everyone became safer and less private";
+    }
+
+    if (state.currentShift === 6) {
+      if (state.flags.penny_protected && state.flags.mara_protected && state.flags.decoy_leak_sent) return "Penny and Mara stayed out of Vale's clean map";
+      if (state.flags.penny_protected) return "Penny left useful without becoming the culprit";
+      if (state.flags.penny_exposed) return "Penny became part of the proof";
+      if (state.flags.house_exposed) return "The house took the blame loudly enough to shield less of itself";
+    }
+
+    if (state.currentShift === 5) {
+      if (state.flags.pax_protected && state.flags.vera_proof_preserved) return "Pax left unnamed; Vera kept proof with fewer teeth";
+      if (state.flags.pax_protected) return "Pax left helped but uncounted";
+      if (state.flags.pax_exposed) return "Pax became the cost of a clean audit";
+      if (state.flags.vera_exposed) return "Vera kept less proof than the room deserved";
+    }
+
     if (state.currentShift === 4) {
       if (state.flags.mika_protected && state.flags.celia_identity_preserved && state.flags.tally_redirected) return "Mika got a birthday; Celia kept a self";
       if (state.flags.mika_protected && state.flags.celia_identity_preserved) return "Mika and Celia both left with fewer witnesses";
@@ -1814,6 +1970,25 @@
   }
 
   function coverIntact() {
+    if (state.currentShift === 7) {
+      if (state.flags.privacy_final_refused) return "Burned, private, unstable";
+      if (state.flags.privacy_final_altered) return "Bent into consent";
+      if (state.flags.privacy_final_delayed) return "Sealed but unresolved";
+      if (state.flags.privacy_final_served) return "Open to Vale";
+    }
+
+    if (state.currentShift === 6) {
+      if (state.flags.house_leak_refused) return "Dark, with missing proof";
+      if (state.flags.house_leak_altered || state.flags.decoy_leak_sent) return "Mostly intact";
+      if (state.flags.house_leak_delayed || state.flags.leak_watched) return "Thin around the router";
+    }
+
+    if (state.currentShift === 5) {
+      if (state.flags.kindness_audit_refused) return "Clean of names, thin on proof";
+      if (state.flags.kindness_receipt_redacted || state.flags.kindness_audit_altered) return "Mostly intact";
+      if (state.flags.audit_watched || state.flags.found_tip_camera) return "Thin around the silver cards";
+    }
+
     if (state.currentShift === 4) {
       if (state.flags.birthday_signal_refused) return "Dark, but the post died";
       if (state.flags.birthday_signal_altered || state.flags.birthday_name_corrected) return "Mostly intact";
@@ -1893,16 +2068,81 @@
 
     const actions = makeElement("div", "footer-actions");
     actions.appendChild(makeChoiceButton({ text: "Return to tab.", next: "receipt_debrief" }, 1));
-    if (state.currentShift < 4) {
+    if (state.currentShift < 7) {
       actions.appendChild(makeChoiceButton({ text: "Continue to Shift " + String(state.currentShift + 1) + ".", action: continueToNextShift }, 2));
     } else {
-      actions.appendChild(makeChoiceButton({ text: "Restart story.", action: startNewShift }, 2));
+      actions.appendChild(makeChoiceButton({ text: "Open final story debrief.", next: "final_story_debrief" }, 2));
+      actions.appendChild(makeChoiceButton({ text: "Restart story.", action: startNewShift }, 3));
     }
     scenePanel.appendChild(actions);
 
     layout.appendChild(scenePanel);
     layout.appendChild(renderSidePanel({ reads: ["Reflection: Shareable, not clinical.", "Branch Reveal: Stats appear only after the shift ends."] }));
     app.appendChild(layout);
+  }
+
+  function renderFinalStoryDebrief() {
+    const layout = makeElement("div", "layout scene-final-story-debrief");
+    const scenePanel = makeElement("section", "scene-panel case-file");
+    const codename = getEarlyCodename();
+
+    scenePanel.appendChild(makeElement("p", "scene-kicker", "Final Story Debrief"));
+    scenePanel.appendChild(makeElement("h2", "", "THE WEEK BELOW SUGAR SHACK"));
+    scenePanel.appendChild(
+      renderText(
+        "Based on your choices this run.\n\n" +
+          finalRunSummary() +
+          "\n\nCodename: " +
+          codename +
+          "\nEnding: " +
+          (state.endingLabel || "Open Tab") +
+          "\nHouse Future: " +
+          finalHouseFuture()
+      )
+    );
+
+    const list = makeElement("ul", "trait-list");
+    finalRunBeats().forEach(function (beat) {
+      list.appendChild(makeElement("li", "", beat));
+    });
+    scenePanel.appendChild(list);
+
+    const actions = makeElement("div", "footer-actions");
+    actions.appendChild(makeChoiceButton({ text: "Return to reflection.", next: "psychology_debrief" }, 1));
+    actions.appendChild(makeChoiceButton({ text: "Restart story.", action: startNewShift }, 2));
+    scenePanel.appendChild(actions);
+
+    layout.appendChild(scenePanel);
+    layout.appendChild(renderSidePanel({ reads: ["Final Tab: Full-week reflection.", "Store Note: Seven-shift arc complete for prototype testing."] }));
+    app.appendChild(layout);
+  }
+
+  function finalRunSummary() {
+    if (state.flags.privacy_final_refused) return "You refused the final bargain. Sugar Shack kept privacy, lost certainty, and chose the terror of letting people remain unowned.";
+    if (state.flags.privacy_final_delayed) return "You refused the deadline. The roster stayed sealed, and the room left with the right to answer after fear stopped talking first.";
+    if (state.flags.privacy_final_altered) return "You bent the bargain into consent. Vale received help only where people chose it, and the house survived by lying carefully.";
+    if (state.flags.privacy_final_served) return "You accepted the guarantee. The room became safer in the way systems understand safety, and less private in the way people feel it.";
+    return "You reached last call with the tab still open. The house has not decided what to call that yet.";
+  }
+
+  function finalHouseFuture() {
+    if (state.flags.house_future_watched) return "Protected, monitored, uneasy";
+    if (state.flags.house_future_private && state.flags.last_call_blackout) return "Private, damaged, alive";
+    if (state.flags.house_future_private) return "Private by consent";
+    return "Open tab";
+  }
+
+  function finalRunBeats() {
+    const beats = [];
+    if (state.flags.nia_protected) beats.push("You learned the wrong glass can endanger someone who only wanted a story.");
+    if (state.flags.orchid_camera_blurred) beats.push("You learned beauty can be used as cover when a camera wants proof.");
+    if (state.flags.memory_receipt_redacted) beats.push("You learned truth and privacy can share the same receipt if someone warms the ink carefully.");
+    if (state.flags.birthday_name_corrected) beats.push("You learned celebration becomes dangerous when a room says the wrong name together.");
+    if (state.flags.kindness_receipt_redacted) beats.push("You learned help should not automatically become a ledger.");
+    if (state.flags.decoy_leak_sent) beats.push("You learned a sanctuary sometimes survives by telling a better lie.");
+    if (state.flags.final_consent_taken) beats.push("You learned the room's uneven answers were not a failure of care. They were care.");
+    if (beats.length === 0) beats.push("You moved through the week on instinct. Sugar Shack kept the tab open because instinct still leaves a trace.");
+    return beats;
   }
 
   function renderSkillTree() {
@@ -1981,6 +2221,23 @@
     if (state.flags.birthday_signal_altered) traits.push("Decoy Wish: You protected a private signal by giving the public room a brighter story.");
     if (state.flags.birthday_signal_delayed) traits.push("Held Song: You stopped the chorus long enough for consent to catch up.");
     if (state.flags.birthday_signal_refused) traits.push("Blown Candle: You chose darkness before a name could become evidence.");
+    if (state.flags.harmony_recording_seen) traits.push("Recorded Reason: You heard Vale make being watched sound like civic care.");
+    if (state.flags.found_kindness_score) traits.push("Ledger Read: You noticed kindness had been turned into columns.");
+    if (state.flags.found_tip_camera) traits.push("Card Lens: You found the camera hidden inside gratitude.");
+    if (state.flags.kindness_receipt_redacted) traits.push("Redacted Help: You kept proof without letting need become a file.");
+    if (state.flags.kindness_audit_delayed) traits.push("Held Credit: You made the audit wait for consent.");
+    if (state.flags.kindness_audit_refused) traits.push("Broken Ledger: You destroyed the count before it could own the helped person.");
+    if (state.flags.vale_direct_signal) traits.push("Live Wire: You heard Vale speak through the house itself.");
+    if (state.flags.found_router_heat) traits.push("Router Pulse: You found the leak by listening to the word safe.");
+    if (state.flags.found_backdoor_log) traits.push("Backdoor Log: You caught a real house code being worn by a false request.");
+    if (state.flags.decoy_leak_sent) traits.push("False Pipe: You protected the house by giving the leak a lie it wanted.");
+    if (state.flags.network_cut) traits.push("Dead Switch: You chose privacy even when it killed the proof.");
+    if (state.flags.privacy_bargain_seen) traits.push("Bargain Ear: You heard the part of Vale's offer that was genuinely tempting.");
+    if (state.flags.found_all_names_list) traits.push("Roster Read: You saw how a list can rescue and endanger at the same time.");
+    if (state.flags.final_consent_taken) traits.push("Uneven Consent: You let the room answer messily instead of averaging fear.");
+    if (state.flags.privacy_final_altered) traits.push("Opt-In Ghosts: You made safety conditional on choice.");
+    if (state.flags.privacy_final_delayed) traits.push("Sealed Last Call: You refused the deadline without pretending the problem vanished.");
+    if (state.flags.privacy_final_refused) traits.push("Private Blackout: You chose unowned danger over guaranteed surveillance.");
     if (state.flags.veil_is_protected) traits.push("Veil Mercy: You warned someone before the room closed in.");
     if (state.flags.capsule_hidden) traits.push("Delayed Signal: You made the house hold its own secret.");
     if (state.flags.capsule_dissolved) traits.push("Melted Message: You chose safety over ownership.");
