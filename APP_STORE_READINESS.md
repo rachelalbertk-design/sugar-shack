@@ -5,8 +5,8 @@ This checklist keeps the prototype moving toward a first TestFlight build withou
 ## Current Status
 
 - Core story engine is intact: scene -> choice -> stat/flag update -> consequence -> next scene -> debrief.
-- Shifts 1-3 are playable from punch-in through receipt and psychology debrief.
-- Launch scope is the complete seven-shift story arc.
+- Shifts 1-7 are playable from punch-in through receipt and psychology debrief.
+- The launch-scope story arc is implemented for prototype testing.
 - Settings panel added for text size, reduce motion, high contrast, replay intro, and clear progress.
 - Privacy and support drafts exist as local pages.
 - The prototype remains offline-first: no account, ads, analytics, or tracking.
@@ -34,7 +34,8 @@ Each shift needs 7-10 story beats, coded orders, civilian complications, limited
 - Confirm save data survives app relaunch and updates.
 - Test on small iPhone, large iPhone, and iPad if iPad is supported.
 - Confirm Settings controls work with VoiceOver and keyboard focus.
-- Complete and test Shifts 4-7 to the same polish level as Whiskey Ramen, The Glass Orchid, and The Memory Tab.
+- Run a full seven-shift editing, balance, accessibility, and device QA pass.
+- Confirm the final story debrief reflects the whole run clearly.
 
 ## App Store Connect
 
@@ -72,5 +73,5 @@ Above street level, Sugar Shack is a cute donut shop. Below it, every drink is a
 - Final hosted privacy/support URLs are missing.
 - Native iOS wrapper has not been created.
 - Final app icon raster assets are missing.
-- Shifts 4-7 are not implemented to launch depth yet.
 - More device and accessibility testing is needed.
+- TestFlight build, signing, and App Store Connect setup still require a Mac/Xcode environment.
