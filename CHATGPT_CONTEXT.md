@@ -62,16 +62,17 @@ Stats and branch labels are revealed only in the receipt and psychology debriefs
    - Celia orders "Two Birthdays. One candle. No song."
    - Mika and Tally turn a private signal into a near-public birthday post.
 
-## Planned Shifts
-
 5. The Kindness Audit
    - Director Vale appears through a recorded message.
+   - Harmony makes kindness measurable and tries to turn help into a ledger.
 
 6. The House Leak
    - Director Vale speaks through the system.
+   - Sugar Shack itself may be compromised, and a civilian delivery exposes a backdoor route.
 
 7. Last Call for Privacy
    - Director Vale offers the final bargain: safety through surveillance.
+   - The room chooses what privacy is worth when safety is genuinely tempting.
 
 ## File Map
 
