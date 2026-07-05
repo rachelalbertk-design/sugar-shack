@@ -14,6 +14,7 @@ Sugar Shack is a hidden futuristic speakeasy beneath a cute public-facing donut 
 - privacy.html - privacy policy draft to publish before store submission
 - support.html - support page draft to publish before store submission
 - APP_STORE_READINESS.md - TestFlight and App Store checklist
+- TESTFLIGHT_PACKAGING.md - native wrapper and TestFlight packaging notes
 - STORY_ROADMAP.md - seven-shift launch story plan
 - GITHUB_UPLOAD_GUIDE.md - simple GitHub and GitHub Pages upload instructions
 - CHATGPT_CONTEXT.md - shareable project brief for ChatGPT or another collaborator
@@ -43,7 +44,10 @@ Current features:
 - Second shift introduces The Glass Orchid, civilian filming pressure, and Harmony's safety language
 - Third shift introduces The Memory Tab, memory audits, and consent around remembered harm
 - Fourth shift introduces Two Birthdays, public celebration pressure, and social posting as danger
-- Launch scope is seven complete shifts, with Shifts 1-4 as the current playable benchmarks
+- Fifth shift introduces The Kindness Audit, Director Vale's recorded message, and kindness measured as control
+- Sixth shift introduces The House Leak, Director Vale speaking through the system, and the venue under pressure
+- Seventh shift introduces Last Call for Privacy, the final bargain, and the full-run story debrief
+- Launch scope is seven complete shifts, with Shifts 1-7 now playable for prototype testing
 - Scene-specific visual props now appear for the job listing, counter, elevator, interview, booth, coded drink, and ending moments
 - Character read cards show soft mood/read states for the cashier, Mara, Silver Veil, Nia, and Jules
 - Earlier choices now echo later through callback text and altered dialogue
@@ -79,4 +83,3 @@ The planned store release is the full seven-shift arc:
 5. The Kindness Audit
 6. The House Leak
 7. Last Call for Privacy
-# sugar-shack
