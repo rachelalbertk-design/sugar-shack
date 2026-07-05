@@ -113,6 +113,55 @@ const initialState = {
     mika_exposed: false,
     celia_identity_preserved: false,
     celia_exposed: false,
+    harmony_recording_seen: false,
+    kindness_audit_served: false,
+    kindness_audit_altered: false,
+    kindness_audit_delayed: false,
+    kindness_audit_refused: false,
+    found_kindness_score: false,
+    found_tip_camera: false,
+    pax_protected: false,
+    pax_exposed: false,
+    vera_proof_preserved: false,
+    vera_exposed: false,
+    audit_watched: false,
+    kindness_receipt_redacted: false,
+    mara_kindness_warning: false,
+    singer_kindness_warning: false,
+    house_leak_detected: false,
+    house_leak_served: false,
+    house_leak_altered: false,
+    house_leak_delayed: false,
+    house_leak_refused: false,
+    found_router_heat: false,
+    found_backdoor_log: false,
+    penny_protected: false,
+    penny_exposed: false,
+    mara_protected: false,
+    house_exposed: false,
+    vale_direct_signal: false,
+    leak_watched: false,
+    mara_leak_warning: false,
+    singer_leak_warning: false,
+    decoy_leak_sent: false,
+    network_cut: false,
+    privacy_bargain_seen: false,
+    privacy_final_served: false,
+    privacy_final_altered: false,
+    privacy_final_delayed: false,
+    privacy_final_refused: false,
+    found_all_names_list: false,
+    found_civilian_roster: false,
+    civilians_gathered: false,
+    final_consent_taken: false,
+    vale_offer_refused: false,
+    vale_offer_accepted: false,
+    house_future_private: false,
+    house_future_watched: false,
+    last_call_blackout: false,
+    mara_final_warning: false,
+    singer_final_warning: false,
+    returns_protected: false,
     capsule_to_veil: false,
     capsule_to_chrome: false,
     capsule_hidden: false,
@@ -2794,6 +2843,1753 @@ const scenes = {
       "You cut the house lights. The phone loses the room. The candle dies before it becomes evidence.",
       "Mika swears, then understands enough to go quiet. Tally deletes the draft with shaking hands.",
       "Celia leaves without a birthday and without a file. Mara relights the bar slowly, one lamp at a time.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  shift5_clocked: {
+    type: "punchcard",
+    title: "12:07 AM",
+    text: paragraphs([
+      "SHIFT 05",
+      "CLOCKED IN",
+      "The punch clock prints APPROVED, then thinks better of it and spits a second line: KIND.",
+    ]),
+    reads: [
+      "Punchcard: Active.",
+      "House Mood: Polite in a way that costs money.",
+    ],
+    choices: [
+      {
+        text: "Enter the floor.",
+        next: "shift5_opening",
+      },
+    ],
+  },
+
+  shift5_opening: {
+    type: "scene",
+    title: "The Kindness Audit",
+    text: paragraphs([
+      "Every table has a tiny silver card tonight: TELL US WHO HELPED YOU FEEL SAFE.",
+      "The cards are printed with Harmony's blue smile and a blank line for a name.",
+      "Mara stacks them face down until the stack looks less like hospitality and more like evidence.",
+    ]),
+    speaker: "Mara",
+    dialogue: "If someone asks you to measure kindness, ask who gets punished for scoring low.",
+    reads: [
+      "Shift Title: The Kindness Audit.",
+      "Room Read: Harmony has made gratitude look mandatory.",
+      "Codebook: Kindness is only clean when nobody invoices it.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Offended",
+        read: "She hates the cards more than the cameras, which says plenty.",
+      },
+    ],
+    choices: [
+      {
+        text: "Begin fifth service.",
+        next: "shift5_patron_intro",
+        effects: {
+          flags: { harmony_recording_seen: true },
+          hidden: { harmony_attention: 1 },
+        },
+      },
+    ],
+  },
+
+  shift5_patron_intro: {
+    type: "scene",
+    title: "Vera Lark",
+    text: paragraphs([
+      "Vera Lark arrives without a coat, as if warmth would make them easier to remember.",
+      "They set a cracked Harmony badge on the bar, face down.",
+      "When a kindness card slides near their hand, they move away from it like it is hot.",
+    ]),
+    speaker: "Vera Lark",
+    dialogue: "Does the house still keep receipts no one is proud of?",
+    reads: [
+      "Vera Mood: Controlled disgust.",
+      "Body Read: They keep watching the silver cards, not the exits.",
+    ],
+    cards: [
+      {
+        name: "Vera Lark",
+        mood: "Burned Out",
+        read: "They brought proof and already regret needing it.",
+      },
+      {
+        name: "Mara",
+        mood: "Listening",
+        read: "She lets the cracked badge sit upside down. That is permission and warning.",
+      },
+    ],
+    choices: [
+      {
+        text: "Say the house keeps ugly receipts.",
+        next: "shift5_coded_order",
+        effects: {
+          stats: { trust: 1, social_read: 1 },
+          hidden: { patron_trust: 1 },
+        },
+        response: "Vera's laugh is one breath long and not happy.",
+      },
+      {
+        text: "Ask who benefits from the score.",
+        next: "shift5_coded_order",
+        effects: {
+          stats: { logic: 1, risk: 1 },
+          flags: { found_kindness_score: true },
+        },
+        response: "Vera taps the badge. The sound is small. The room hears it anyway.",
+      },
+      {
+        text: "Watch who touches the cards first.",
+        next: "shift5_coded_order",
+        effects: {
+          stats: { social_read: 1, independence: 1 },
+          flags: { audit_watched: true },
+        },
+        response: "Two people avoid the cards. One person smiles at them like a camera.",
+      },
+    ],
+  },
+
+  shift5_coded_order: {
+    type: "scene",
+    title: "The Score",
+    speaker: "Vera Lark",
+    dialogue: "Kindness Audit. No sugar. Keep the receipt.",
+    text: paragraphs([
+      "The order makes the silver cards seem louder.",
+      "A screen behind the bar wakes with a recorded message. Director Vale's face is calm enough to be expensive.",
+      "They do not introduce themself. They do not have to.",
+    ]),
+    reads: [
+      "Codebook: Kindness Audit means a good deed is being turned into a record.",
+      "Codebook: No sugar means do not sweeten the proof.",
+      "Codebook: Keep the receipt means someone needs the system caught in its own handwriting.",
+    ],
+    cards: [
+      {
+        name: "Director Vale",
+        mood: "Recorded",
+        read: "The message calls surveillance care, and care a public good.",
+      },
+      {
+        name: "Vera Lark",
+        mood: "Steady",
+        read: "They need proof preserved, but not at a civilian's expense.",
+      },
+    ],
+    choices: [
+      {
+        text: "Write the audit exactly.",
+        next: "shift5_civilians_enter",
+        effects: {
+          stats: { logic: 1 },
+          hidden: { venue_stability: 1, harmony_attention: 1 },
+          flags: { harmony_recording_seen: true },
+        },
+        response: "Vale's recorded smile brightens by one impossible shade.",
+      },
+      {
+        text: "Ask what the receipt would name.",
+        next: "shift5_civilians_enter",
+        effects: {
+          stats: { logic: 1, social_read: 1, risk: 1 },
+          flags: { found_kindness_score: true },
+        },
+        response: "Vera says: everyone who helped, everyone who failed, everyone who was seen needing help.",
+      },
+      {
+        text: "Keep the order off the kindness card.",
+        next: "shift5_civilians_enter",
+        effects: {
+          stats: { mercy: 1, independence: 1 },
+          hidden: { harmony_attention: -1 },
+          flags: { kindness_receipt_redacted: true },
+        },
+        response: "Mara folds the card once and slides it under the bar mat.",
+      },
+    ],
+  },
+
+  shift5_civilians_enter: {
+    type: "scene",
+    title: "Please Rate Your Rescue",
+    text: paragraphs([
+      "Pax comes in from the late train with rain in their sleeves and a grocery bag splitting at the bottom.",
+      "Rina, a rich thrill-seeker with kindness cards already in hand, catches the oranges before they roll under Booth 3.",
+      "A table screen chirps: HELPFUL MOMENT DETECTED. WOULD YOU LIKE TO CREDIT RINA?",
+    ]),
+    speaker: "Pax",
+    dialogue: "I just wanted somewhere dry for ten minutes.",
+    reads: [
+      "Pax Mood: Exhausted and embarrassed.",
+      "Rina Mood: Thrilled to be useful where people can see.",
+      "Problem: The civilian rescue is about to become Vera's proof and Pax's file.",
+    ],
+    cards: [
+      {
+        name: "Pax",
+        mood: "Frayed",
+        read: "They needed help. They did not consent to becoming a lesson.",
+      },
+      {
+        name: "Rina",
+        mood: "Glowing",
+        read: "Their kindness is real. Their need to be seen doing it is also real.",
+      },
+      {
+        name: "Vera Lark",
+        mood: "Cornered",
+        read: "They know the audit just handed them proof with a civilian attached.",
+      },
+    ],
+    choices: [
+      {
+        text: "Move Pax to the service end before the screen finishes.",
+        next: "shift5_confusion",
+        effects: {
+          stats: { mercy: 1, social_read: 1 },
+          hidden: { civilian_safety: 1 },
+          flags: { pax_protected: true },
+        },
+        response: "Pax follows the towel more than the instruction. The screen loses their face.",
+      },
+      {
+        text: "Thank Rina without saying Pax's name.",
+        next: "shift5_confusion",
+        effects: {
+          stats: { social_read: 1, trust: 1 },
+          flags: { kindness_receipt_redacted: true },
+        },
+        response: "Rina beams. Pax looks less like a headline.",
+      },
+      {
+        text: "Let the prompt hover and watch Vera.",
+        next: "shift5_confusion",
+        effects: {
+          stats: { risk: 1, social_read: 1 },
+          hidden: { heat: 1, harmony_attention: 1 },
+          flags: { audit_watched: true, found_kindness_score: true },
+        },
+        response: "Vera's hand twitches toward the badge, then away from Pax.",
+      },
+    ],
+  },
+
+  shift5_confusion: {
+    type: "scene",
+    title: "A Good Deed With Teeth",
+    text: paragraphs([
+      "The table screen prints a tiny receipt: RINA HELPED. PAX NEEDED HELP. STAFF RESPONSE PENDING.",
+      "Rina laughs because it feels like a game.",
+      "Pax goes still because their need now has a timestamp.",
+    ]),
+    reads: [
+      "Wrong-Receipt Problem: The proof names the person helped, not only the system watching.",
+      "Civilian Risk: Pax may become safer tonight and less safe tomorrow.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Warning",
+        read: "She looks at the receipt, then at the sink.",
+      },
+      {
+        name: "Pax",
+        mood: "Small",
+        read: "They are trying to make their body take up less data.",
+      },
+      {
+        name: "Rina",
+        mood: "Confused",
+        read: "The praise has started sounding like blame.",
+      },
+      {
+        name: "Vera Lark",
+        mood: "Torn",
+        read: "They need the record. They hate the record.",
+      },
+    ],
+    choices: [
+      {
+        text: "Take two limited reads before the audit closes.",
+        next: "shift5_snoop_menu",
+      },
+    ],
+  },
+
+  shift5_snoop_menu: {
+    type: "snoopMenu",
+    title: "Read the Audit",
+    text: "Choose what to inspect or interrupt. You have time for two reads before Harmony marks the moment resolved.",
+    cards: [
+      {
+        name: "Pax",
+        mood: "Exposed",
+        read: "They want the help to have happened without becoming a reason to be found.",
+      },
+      {
+        name: "Vera Lark",
+        mood: "Ruthless, reluctantly",
+        read: "Their proof is only clean if no civilian gets trapped inside it.",
+      },
+      {
+        name: "Rina",
+        mood: "Learning",
+        read: "They did a kind thing and are noticing the room made it hungry.",
+      },
+    ],
+    options: [
+      {
+        text: "Inspect the printed score",
+        response: "The score lists helper, helped, staff witness, and response delay. Kindness has columns now.",
+        effects: {
+          stats: { logic: 1 },
+          flags: { found_kindness_score: true },
+        },
+      },
+      {
+        text: "Check the table camera",
+        response: "A pinhole lens hides in the silver card. It caught Pax's face more clearly than Rina's hands.",
+        effects: {
+          stats: { logic: 1, risk: 1 },
+          hidden: { harmony_attention: 1 },
+          flags: { found_tip_camera: true, harmony_recording_seen: true },
+        },
+      },
+      {
+        text: "Read Pax",
+        response: "Pax is not afraid of Rina. They are afraid of being marked as someone who needed saving.",
+        effects: {
+          stats: { mercy: 1, social_read: 1 },
+          flags: { pax_protected: true },
+        },
+      },
+      {
+        text: "Read Rina",
+        response: "Rina's pride curdles into shame when she sees Pax stop smiling. There is still a person under the performance.",
+        effects: {
+          stats: { social_read: 2 },
+        },
+      },
+      {
+        text: "Ask Mara with your eyes",
+        response: "Mara presses one finger over the camera dot. Proof can save a crowd and still harm the first person it names.",
+        effects: {
+          stats: { trust: 1, social_read: 1 },
+          hidden: { house_trust: 1 },
+          flags: { mara_kindness_warning: true },
+        },
+      },
+      {
+        text: "Listen to the Singer",
+        response: "The Singer changes one line: nobody owes a song for being lifted. Pax hears it. So does Vera.",
+        effects: {
+          stats: { social_read: 2 },
+          flags: { singer_kindness_warning: true },
+        },
+      },
+      {
+        text: "Blur Pax's line on the receipt",
+        response: "A damp cherry stem and a warm thumb turn Pax's name into a soft unreadable smear.",
+        effects: {
+          stats: { mercy: 1, logic: 1 },
+          hidden: { civilian_safety: 1, harmony_attention: -1 },
+          flags: { kindness_receipt_redacted: true, pax_protected: true },
+        },
+      },
+      {
+        text: "Do not interfere yet",
+        response: "You let the audit keep counting. Rina reaches for Pax's bag again, slower this time.",
+        effects: {
+          stats: { risk: 1, social_read: 1 },
+          hidden: { heat: 1, harmony_attention: 1 },
+          flags: { audit_watched: true },
+        },
+        endSnooping: true,
+      },
+    ],
+    nextWhenDone: "shift5_convergence",
+  },
+
+  shift5_convergence: {
+    type: "scene",
+    title: "Director Vale, Recorded",
+    speaker: "Director Vale",
+    dialogue: "A society that cannot measure care cannot guarantee it.",
+    text: paragraphs([
+      "The recorded message plays again, calm as clean glass.",
+      "Pax hears guarantee and looks like someone just locked a door.",
+      "Vera places the cracked badge beside the printed score. Rina finally lowers the kindness card.",
+    ]),
+    reads: [
+      "Vale Mood: Reasonable and impossible to interrupt.",
+      "Vera Mood: Needing proof without wanting a victim.",
+      "Pax Mood: One click from becoming evidence.",
+    ],
+    cards: [
+      {
+        name: "Director Vale",
+        mood: "Persuasive",
+        read: "They make surveillance sound like a public utility.",
+      },
+      {
+        name: "Pax",
+        mood: "Waiting",
+        read: "They deserve help that does not follow them home.",
+      },
+      {
+        name: "Vera Lark",
+        mood: "Grim",
+        read: "They are choosing between a clean case and a clean conscience.",
+      },
+    ],
+    choices: [
+      {
+        text: "Tell Pax what the receipt would do.",
+        next: "shift5_host_signal",
+        effects: {
+          stats: { mercy: 1, trust: 1 },
+          hidden: { civilian_safety: 1 },
+          flags: { pax_protected: true },
+        },
+        response: "Pax says thank you like the words are not enough and also too much.",
+      },
+      {
+        text: "Ask Vera if proof still counts with a name missing.",
+        next: "shift5_host_signal",
+        effects: {
+          stats: { logic: 1, social_read: 1 },
+          flags: { kindness_receipt_redacted: true, vera_proof_preserved: true },
+        },
+        response: "Vera looks at Pax before answering. Good, they say. It counts better.",
+      },
+      {
+        text: "Let the audit hover until Rina speaks.",
+        next: "shift5_host_signal",
+        effects: {
+          stats: { risk: 1, social_read: 1 },
+          hidden: { heat: 1 },
+          flags: { audit_watched: true },
+        },
+        response: "Rina says: I do not need credit. The room gets quieter than applause.",
+      },
+    ],
+  },
+
+  shift5_host_signal: {
+    type: "scene",
+    title: "Mara's Silver Card",
+    text: paragraphs([
+      "Mara sets one blank kindness card on the bar.",
+      "Vera's proof, Pax's name, Rina's good deed, and Vale's recorded smile all wait for the same ink.",
+      "Serve. Alter. Delay. Refuse.",
+      "The audit wants a clean answer. That is how you know it is lying.",
+    ]),
+    reads: [
+      "Mara Mood: Letting you choose whether care becomes proof, cover, consent, or ash.",
+      "Final Read: Vera needs the system exposed. Pax needs not to be the cost of exposure.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Cold",
+        read: "She has already decided kindness should not have a receipt. She has not decided what proof costs.",
+      },
+      {
+        name: "Vera and Pax",
+        mood: "Caught Together",
+        read: "One needs the record. One needs out of it. Both are right.",
+      },
+    ],
+    choices: [
+      {
+        text: "Close the audit.",
+        next: "shift5_final_decision",
+      },
+    ],
+  },
+
+  shift5_final_decision: {
+    type: "scene",
+    title: "Last Call: The Kindness Audit",
+    text: "The shift has narrowed to one measured kindness, one exposed civilian, and a recorded voice selling safety as arithmetic.",
+    reads: [
+      "Spy Question: Which part of the audit proves Harmony's harm?",
+      "Human Question: Can proof stay useful if the person harmed gets to disappear from it?",
+      "House Mood: Waiting to see if you treat kindness as evidence, consent, cover, or fire.",
+    ],
+    cards: [
+      {
+        name: "Vera Lark",
+        mood: "Ready",
+        read: "They can carry an ugly receipt if it does not name Pax.",
+      },
+      {
+        name: "Pax",
+        mood: "Barely Holding",
+        read: "They needed shelter, not a case file.",
+      },
+      {
+        name: "Director Vale",
+        mood: "Recorded",
+        read: "The screen keeps smiling because it cannot imagine being ashamed.",
+      },
+    ],
+    choices: [
+      {
+        text: "Serve - keep the Kindness Audit intact as proof.",
+        next: "result_kindness_served",
+        effects: {
+          stats: { logic: 2, trust: 1 },
+          hidden: { patron_trust: 1, heat: 1, civilian_exposure: 1 },
+          flags: { kindness_audit_served: true, vera_proof_preserved: true, pax_exposed: true },
+        },
+      },
+      {
+        text: "Alter - preserve the audit but redact Pax from it.",
+        next: "result_kindness_altered",
+        effects: {
+          stats: { mercy: 1, logic: 1, social_read: 1 },
+          hidden: { civilian_safety: 2, house_trust: 1, harmony_attention: -1 },
+          flags: { kindness_audit_altered: true, kindness_receipt_redacted: true, pax_protected: true, vera_proof_preserved: true },
+        },
+      },
+      {
+        text: "Delay - hold the receipt until Pax and Vera both choose.",
+        next: "result_kindness_delayed",
+        effects: {
+          stats: { mercy: 1, social_read: 2, risk: 1 },
+          hidden: { civilian_safety: 1, heat: 1 },
+          flags: { kindness_audit_delayed: true, pax_protected: true, audit_watched: true },
+        },
+      },
+      {
+        text: "Refuse - destroy the kindness score before Vale can count it.",
+        next: "result_kindness_refused",
+        effects: {
+          stats: { independence: 2, mercy: 1, risk: 1 },
+          hidden: { house_trust: -1, civilian_safety: 2, heat: 1 },
+          flags: { kindness_audit_refused: true, pax_protected: true, vera_exposed: true },
+        },
+      },
+    ],
+  },
+
+  result_kindness_served: {
+    type: "result",
+    endingLabel: "Clean Audit",
+    text: paragraphs([
+      "You let the Kindness Audit print intact.",
+      "Vera gets proof clean enough to bruise Harmony in public.",
+      "Pax leaves with dry sleeves and a name inside a machine that thinks help is ownership.",
+      "Director Vale's recording thanks Sugar Shack for participating in community safety.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_kindness_altered: {
+    type: "result",
+    endingLabel: "Redacted Kindness",
+    text: paragraphs([
+      "You keep the audit's shape and remove Pax from its teeth.",
+      "Vera receives a receipt that proves the machine was watching without handing it a civilian.",
+      "Rina apologizes without making the apology public. Pax accepts the towel, not the attention.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_kindness_delayed: {
+    type: "result",
+    endingLabel: "Held Credit",
+    text: paragraphs([
+      "You hold the receipt under your palm until Pax can breathe and Vera can ask properly.",
+      "No one gets instant proof. No one gets instantly owned.",
+      "Vale's recording loops once, then stops. Even the machine sounds annoyed by consent.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_kindness_refused: {
+    type: "result",
+    endingLabel: "Broken Ledger",
+    text: paragraphs([
+      "The kindness score dissolves in soda water and pink salt.",
+      "Pax leaves uncounted. Vera leaves with a cracked badge and not enough proof.",
+      "Mara pockets the blank card. She looks proud and worried, which is becoming a house specialty.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  shift6_clocked: {
+    type: "punchcard",
+    title: "12:07 AM",
+    text: paragraphs([
+      "SHIFT 06",
+      "CLOCKED IN",
+      "The punch clock prints your name, backspaces it in ink, and prints HOUSE STAFF instead.",
+    ]),
+    reads: [
+      "Punchcard: Active.",
+      "House Mood: Listening to itself too closely.",
+    ],
+    choices: [
+      {
+        text: "Enter the floor.",
+        next: "shift6_opening",
+      },
+    ],
+  },
+
+  shift6_opening: {
+    type: "scene",
+    title: "The House Leak",
+    text: paragraphs([
+      "The lounge opens with half the neon dark and the other half humming in the wrong key.",
+      "The receipt printer has been moved to the center of the bar like a witness under protection.",
+      "Mara does not greet you. She hands you a towel already damp with someone else's panic.",
+    ]),
+    speaker: "Mara",
+    dialogue: "Tonight, if the house tells you a secret, ask whether it meant to.",
+    reads: [
+      "Shift Title: The House Leak.",
+      "Room Read: Sugar Shack is acting like it has a fever.",
+      "Codebook: A leak is not always betrayal. Sometimes it is a wound looking for air.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Drawn Tight",
+        read: "She is protecting the room and suspecting it at the same time.",
+      },
+    ],
+    choices: [
+      {
+        text: "Begin sixth service.",
+        next: "shift6_patron_intro",
+        effects: {
+          flags: { house_leak_detected: true },
+          hidden: { heat: 1 },
+        },
+      },
+    ],
+  },
+
+  shift6_patron_intro: {
+    type: "scene",
+    title: "Penny Coil",
+    text: paragraphs([
+      "Penny Coil arrives in a maintenance jacket with no logo and too many pockets.",
+      "They carry a tray of dead router lights like someone bringing flowers to a hospital.",
+      "Every time Mara looks at them, Penny looks guilty. Every time the printer clicks, they look scared.",
+    ]),
+    speaker: "Penny Coil",
+    dialogue: "I was told the downstairs router needed a kindness patch. That felt wrong, so I came in person.",
+    reads: [
+      "Penny Mood: Honest fear.",
+      "Body Read: They did touch the system. They may not be the leak.",
+    ],
+    cards: [
+      {
+        name: "Penny Coil",
+        mood: "Overmatched",
+        read: "They know machines better than rooms full of people who lie professionally.",
+      },
+      {
+        name: "Mara",
+        mood: "Dangerous",
+        read: "She wants to believe Penny and hates that wanting.",
+      },
+    ],
+    choices: [
+      {
+        text: "Let Penny set the router tray on the bar.",
+        next: "shift6_coded_order",
+        effects: {
+          stats: { trust: 1, logic: 1 },
+          hidden: { patron_trust: 1 },
+        },
+        response: "Penny exhales like they expected to be searched first.",
+      },
+      {
+        text: "Ask who sent the patch.",
+        next: "shift6_coded_order",
+        effects: {
+          stats: { logic: 1, risk: 1 },
+          flags: { found_backdoor_log: true },
+        },
+        response: "Penny says the request came from inside Sugar Shack. Mara's face does not move. That is worse.",
+      },
+      {
+        text: "Watch the printer while Penny speaks.",
+        next: "shift6_coded_order",
+        effects: {
+          stats: { social_read: 1, independence: 1 },
+          flags: { leak_watched: true },
+        },
+        response: "The printer clicks once on the word inside.",
+      },
+    ],
+  },
+
+  shift6_coded_order: {
+    type: "scene",
+    title: "Dry Glass",
+    speaker: "Penny Coil",
+    dialogue: "House Leak. Dry glass. Leave the door open.",
+    text: paragraphs([
+      "The router lights blink in a pattern that looks almost like breathing.",
+      "Mara's hand moves toward the breaker box, then stops.",
+      "The bar speaker crackles. Director Vale's voice comes through live this time, soft as a reasonable knife.",
+    ]),
+    reads: [
+      "Codebook: House Leak means the venue itself may be carrying a signal out.",
+      "Codebook: Dry glass means no visible spill, no obvious culprit.",
+      "Codebook: Leave the door open means the leak can be followed only if it keeps flowing.",
+    ],
+    cards: [
+      {
+        name: "Director Vale",
+        mood: "Present",
+        read: "They speak as if they were invited. No one invited them.",
+      },
+      {
+        name: "Penny Coil",
+        mood: "Shaken",
+        read: "They expected malware. They did not expect a voice.",
+      },
+    ],
+    choices: [
+      {
+        text: "Write the leak down exactly.",
+        next: "shift6_civilians_enter",
+        effects: {
+          stats: { logic: 1 },
+          hidden: { harmony_attention: 1 },
+          flags: { vale_direct_signal: true },
+        },
+        response: "Vale says thank you before the pen leaves the paper.",
+      },
+      {
+        text: "Ask whether the door opens both ways.",
+        next: "shift6_civilians_enter",
+        effects: {
+          stats: { logic: 1, social_read: 1, risk: 1 },
+          flags: { found_backdoor_log: true },
+        },
+        response: "Penny looks at the router. Mara looks at the ceiling. Vale says: all useful doors do.",
+      },
+      {
+        text: "Keep the order between you and Mara.",
+        next: "shift6_civilians_enter",
+        effects: {
+          stats: { mercy: 1, independence: 1 },
+          hidden: { harmony_attention: -1 },
+          flags: { mara_protected: true },
+        },
+        response: "Mara's jaw unclenches by a fraction. The speaker hums like it noticed.",
+      },
+    ],
+  },
+
+  shift6_civilians_enter: {
+    type: "scene",
+    title: "Wrong Delivery Door",
+    text: paragraphs([
+      "Nash, a delivery kid with a helmet under one arm, steps out of the elevator carrying a sealed box of sugar filters.",
+      "The label says SUGAR SHACK BACK DOOR, but Sugar Shack does not have a back door on paper.",
+      "Nash grins at the room, then realizes nobody is smiling back.",
+    ]),
+    speaker: "Nash",
+    dialogue: "I was told to bring this down and not ask why. Is that, like, normal here?",
+    reads: [
+      "Nash Mood: Trying to be funny before fear arrives.",
+      "Penny Mood: Horrified recognition.",
+      "Problem: The civilian delivery may be the leak's physical key.",
+    ],
+    cards: [
+      {
+        name: "Nash",
+        mood: "Too Young For This",
+        read: "They are a courier by accident, not a spy by choice.",
+      },
+      {
+        name: "Penny Coil",
+        mood: "Alarmed",
+        read: "They know the label format. That makes them useful and vulnerable.",
+      },
+      {
+        name: "Mara",
+        mood: "Counting Exits",
+        read: "She is deciding how much of the house to save at once.",
+      },
+    ],
+    choices: [
+      {
+        text: "Move Nash away from the box before asking anything.",
+        next: "shift6_confusion",
+        effects: {
+          stats: { mercy: 1, social_read: 1 },
+          hidden: { civilian_safety: 1 },
+          flags: { penny_protected: true },
+        },
+        response: "Nash lets go because you make letting go feel normal.",
+      },
+      {
+        text: "Ask Penny to read the label without touching it.",
+        next: "shift6_confusion",
+        effects: {
+          stats: { logic: 1, trust: 1 },
+          flags: { found_backdoor_log: true },
+        },
+        response: "Penny says the routing code belongs to the house, but the handwriting does not.",
+      },
+      {
+        text: "Let Nash hold it and watch who panics.",
+        next: "shift6_confusion",
+        effects: {
+          stats: { risk: 1, social_read: 1 },
+          hidden: { heat: 1, harmony_attention: 1 },
+          flags: { leak_watched: true },
+        },
+        response: "Mara panics last. The printer panics first.",
+      },
+    ],
+  },
+
+  shift6_confusion: {
+    type: "scene",
+    title: "Inside Address",
+    text: paragraphs([
+      "The box label rewrites itself in heat-print: DELIVER TO BOOTH 3. WITNESS: STAFF.",
+      "The router tray answers with three blue lights.",
+      "Vale's voice returns through the speaker: you are all safer when the doors are known.",
+    ]),
+    reads: [
+      "Wrong-Door Problem: The leak is using Sugar Shack's own routes.",
+      "Civilian Risk: Nash carried the key, Penny can explain it, and either one can be blamed.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Furious",
+        read: "She looks betrayed by architecture.",
+      },
+      {
+        name: "Penny Coil",
+        mood: "Useful and terrified",
+        read: "They can trace the door if the door stays open.",
+      },
+      {
+        name: "Nash",
+        mood: "Regretting Every Tip",
+        read: "They are learning that not asking why was still an answer.",
+      },
+    ],
+    choices: [
+      {
+        text: "Take two limited reads before the leak closes.",
+        next: "shift6_snoop_menu",
+      },
+    ],
+  },
+
+  shift6_snoop_menu: {
+    type: "snoopMenu",
+    title: "Read the Leak",
+    text: "Choose what to inspect or interrupt. You have time for two reads before the back door seals itself or opens wider.",
+    cards: [
+      {
+        name: "Penny Coil",
+        mood: "Focused",
+        read: "Fear made them sharper, not smaller.",
+      },
+      {
+        name: "Mara",
+        mood: "Protective",
+        read: "She will burn the house down before letting Vale map it cleanly.",
+      },
+      {
+        name: "Nash",
+        mood: "Civilian",
+        read: "The room is trying to turn a delivery mistake into a witness statement.",
+      },
+    ],
+    options: [
+      {
+        text: "Inspect the router tray",
+        response: "One light is hot enough to soften the plastic. It pulses every time Vale says safe.",
+        effects: {
+          stats: { logic: 1 },
+          flags: { found_router_heat: true },
+        },
+      },
+      {
+        text: "Check the delivery label",
+        response: "The label contains a backdoor route keyed to Mara's staff code. The code is real. The request is not.",
+        effects: {
+          stats: { logic: 1, risk: 1 },
+          hidden: { harmony_attention: 1 },
+          flags: { found_backdoor_log: true, vale_direct_signal: true },
+        },
+      },
+      {
+        text: "Read Penny",
+        response: "Penny is afraid of being blamed, but more afraid of leaving the leak alive.",
+        effects: {
+          stats: { mercy: 1, social_read: 1 },
+          flags: { penny_protected: true },
+        },
+      },
+      {
+        text: "Read Mara",
+        response: "Mara knows the staff code is hers. She did not send it. She is deciding whether anyone will believe that.",
+        effects: {
+          stats: { social_read: 2 },
+          flags: { mara_protected: true },
+        },
+      },
+      {
+        text: "Ask Mara with your eyes",
+        response: "Mara taps the breaker box twice: follow it if you can lie better than it can listen.",
+        effects: {
+          stats: { trust: 1, social_read: 1 },
+          hidden: { house_trust: 1 },
+          flags: { mara_leak_warning: true },
+        },
+      },
+      {
+        text: "Listen to the Singer",
+        response: "The Singer hums the house theme backward. The router lights stutter on the wrong note.",
+        effects: {
+          stats: { social_read: 2 },
+          flags: { singer_leak_warning: true, found_router_heat: true },
+        },
+      },
+      {
+        text: "Write a false route onto the label",
+        response: "You turn BACK DOOR into BACK BAR with one wet thumb. The router accepts the lie a little too eagerly.",
+        effects: {
+          stats: { logic: 1, independence: 1 },
+          hidden: { harmony_attention: -1 },
+          flags: { decoy_leak_sent: true, penny_protected: true },
+        },
+      },
+      {
+        text: "Do not interfere yet",
+        response: "You let the route stay open. Vale pauses before speaking again. That pause is the first honest thing they have given you.",
+        effects: {
+          stats: { risk: 1, social_read: 1 },
+          hidden: { heat: 1, harmony_attention: 1 },
+          flags: { leak_watched: true },
+        },
+        endSnooping: true,
+      },
+    ],
+    nextWhenDone: "shift6_convergence",
+  },
+
+  shift6_convergence: {
+    type: "scene",
+    title: "Vale Speaks Through the House",
+    speaker: "Director Vale",
+    dialogue: "Mara has kept you safe by keeping you unseen. I can keep you safer by making hiding unnecessary.",
+    text: paragraphs([
+      "The voice does not echo from one speaker. It arrives from the register, the elevator, the printer, the router tray.",
+      "For three seconds, Sugar Shack sounds like it belongs to someone else.",
+      "Mara looks at the ceiling as if daring it to apologize.",
+    ]),
+    reads: [
+      "Vale Mood: Gentle pressure.",
+      "Mara Mood: Hurt in a place she cannot guard.",
+      "Penny Mood: Ready to trace the route if you let it breathe.",
+    ],
+    cards: [
+      {
+        name: "Director Vale",
+        mood: "Inside",
+        read: "They are not shouting. They are making ownership sound like rescue.",
+      },
+      {
+        name: "Mara",
+        mood: "Still Standing",
+        read: "She refuses to look betrayed in front of civilians.",
+      },
+      {
+        name: "Penny and Nash",
+        mood: "Too Involved",
+        read: "One can trace the leak. One carried it. Both need out alive.",
+      },
+    ],
+    choices: [
+      {
+        text: "Tell Penny to trace only the outgoing route.",
+        next: "shift6_host_signal",
+        effects: {
+          stats: { logic: 1, mercy: 1 },
+          hidden: { civilian_safety: 1 },
+          flags: { penny_protected: true },
+        },
+        response: "Penny nods once. Nash watches them like a person watching a wire defuse itself.",
+      },
+      {
+        text: "Ask Mara whether the house can survive being mapped.",
+        next: "shift6_host_signal",
+        effects: {
+          stats: { trust: 1, social_read: 1 },
+          flags: { mara_protected: true },
+        },
+        response: "Mara says: houses survive maps. People hiding inside them sometimes do not.",
+      },
+      {
+        text: "Let Vale keep talking and watch the router.",
+        next: "shift6_host_signal",
+        effects: {
+          stats: { risk: 1, logic: 1 },
+          hidden: { heat: 1, harmony_attention: 1 },
+          flags: { leak_watched: true, vale_direct_signal: true },
+        },
+        response: "The router blinks toward the elevator when Vale says safer.",
+      },
+    ],
+  },
+
+  shift6_host_signal: {
+    type: "scene",
+    title: "The Breaker Box",
+    text: paragraphs([
+      "Mara opens the breaker box and leaves her hand beside the master switch.",
+      "Penny holds the router route open with shaking fingers.",
+      "Nash backs away from the box until the booth catches them.",
+      "Serve. Alter. Delay. Refuse.",
+    ]),
+    reads: [
+      "Mara Mood: Letting you choose whether the leak becomes proof, decoy, trap, or darkness.",
+      "Final Read: The house needs protection. The people inside it need not to become insulation.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Raw",
+        read: "Her staff code was used as a wound.",
+      },
+      {
+        name: "Penny Coil",
+        mood: "Brave Enough",
+        read: "They can keep the door open. They cannot promise what comes through.",
+      },
+      {
+        name: "Director Vale",
+        mood: "Waiting",
+        read: "They know every second you hesitate is also data.",
+      },
+    ],
+    choices: [
+      {
+        text: "Choose the route.",
+        next: "shift6_final_decision",
+      },
+    ],
+  },
+
+  shift6_final_decision: {
+    type: "scene",
+    title: "Last Call: The House Leak",
+    text: "The shift has narrowed to an open back door, Mara's stolen staff code, and Director Vale speaking like a guest who already has a key.",
+    reads: [
+      "Spy Question: Do you follow the leak, poison it, hold it, or cut it?",
+      "Human Question: Who gets blamed when a house is wounded from inside?",
+      "House Mood: Waiting to see whether loyalty means trust, truth, cover, or a locked switch.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Exposed",
+        read: "Saving the house may still hurt her.",
+      },
+      {
+        name: "Penny and Nash",
+        mood: "At Risk",
+        read: "They are useful enough to be dangerous to themselves.",
+      },
+      {
+        name: "Director Vale",
+        mood: "Patient",
+        read: "They have mistaken patience for mercy.",
+      },
+    ],
+    choices: [
+      {
+        text: "Serve - follow the leak and preserve the true route.",
+        next: "result_leak_served",
+        effects: {
+          stats: { logic: 2, trust: 1 },
+          hidden: { house_trust: 1, heat: 1, harmony_attention: 1 },
+          flags: { house_leak_served: true, house_exposed: true, penny_exposed: true },
+        },
+      },
+      {
+        text: "Alter - feed Vale a false route through the back bar.",
+        next: "result_leak_altered",
+        effects: {
+          stats: { logic: 1, independence: 1, social_read: 1 },
+          hidden: { house_trust: 1, civilian_safety: 1, harmony_attention: -1 },
+          flags: { house_leak_altered: true, decoy_leak_sent: true, penny_protected: true, mara_protected: true },
+        },
+      },
+      {
+        text: "Delay - keep the route open only long enough to see who answers.",
+        next: "result_leak_delayed",
+        effects: {
+          stats: { risk: 1, social_read: 2, trust: 1 },
+          hidden: { heat: 1, house_trust: 1 },
+          flags: { house_leak_delayed: true, leak_watched: true, penny_protected: true },
+        },
+      },
+      {
+        text: "Refuse - cut the network and kill the door.",
+        next: "result_leak_refused",
+        effects: {
+          stats: { independence: 2, mercy: 1, risk: 1 },
+          hidden: { venue_stability: -1, civilian_safety: 2, heat: 1 },
+          flags: { house_leak_refused: true, network_cut: true, penny_protected: true, mara_protected: true },
+        },
+      },
+    ],
+  },
+
+  result_leak_served: {
+    type: "result",
+    endingLabel: "Open Pipe",
+    text: paragraphs([
+      "You follow the leak without flinching.",
+      "Penny traces the route to a Harmony relay dressed in Sugar Shack's own staff code.",
+      "Mara gets proof. Vale gets a map fragment. Nash gets to learn what a subpoena sounds like before anyone says the word.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_leak_altered: {
+    type: "result",
+    endingLabel: "False Pipe",
+    text: paragraphs([
+      "You feed the leak a route that smells like Sugar Shack and leads nowhere useful.",
+      "Vale thanks the house for its cooperation. Penny almost laughs. Mara actually does not.",
+      "The real back door closes quietly behind the lie.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_leak_delayed: {
+    type: "result",
+    endingLabel: "Held Door",
+    text: paragraphs([
+      "You keep the door open for one breath too long and one breath not long enough.",
+      "A Harmony relay answers. Penny catches the address. Vale catches that you were listening.",
+      "Mara shuts the breaker with two fingers and looks at you like debt has changed shape.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_leak_refused: {
+    type: "result",
+    endingLabel: "Dead Switch",
+    text: paragraphs([
+      "You cut the network.",
+      "Sugar Shack goes dark, silent, private, and blind.",
+      "Penny drops the router tray. Nash says a word they probably learned upstairs.",
+      "When emergency pink light returns, Vale is gone. So is the proof of where they were.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  shift7_clocked: {
+    type: "punchcard",
+    title: "12:07 AM",
+    text: paragraphs([
+      "SHIFT 07",
+      "CLOCKED IN",
+      "The punch clock does not stamp. It asks a question: WHO GETS TO REMEMBER YOU?",
+    ]),
+    reads: [
+      "Punchcard: Active.",
+      "House Mood: Last call.",
+    ],
+    choices: [
+      {
+        text: "Enter the floor.",
+        next: "shift7_opening",
+      },
+    ],
+  },
+
+  shift7_opening: {
+    type: "scene",
+    title: "Last Call for Privacy",
+    text: paragraphs([
+      "Sugar Shack is full before service starts.",
+      "Nia and Jules sit near the exit. Theo and Rook share one booth. Mika keeps Tally's phone face down under a napkin.",
+      "Pax stands with Vera. Penny stands by the breaker. Everyone looks like a receipt that survived the wash.",
+    ]),
+    speaker: "Mara",
+    dialogue: "Tonight nobody orders alone.",
+    reads: [
+      "Shift Title: Last Call for Privacy.",
+      "Room Read: The civilians are not noise anymore. They are the point.",
+      "Codebook: Last call means the house will not get another clean chance.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Tender and armed",
+        read: "She has stopped pretending the house can protect people without needing them.",
+      },
+    ],
+    choices: [
+      {
+        text: "Begin final service.",
+        next: "shift7_patron_intro",
+        effects: {
+          flags: { civilians_gathered: true, privacy_bargain_seen: true },
+          hidden: { heat: 1 },
+        },
+      },
+    ],
+  },
+
+  shift7_patron_intro: {
+    type: "scene",
+    title: "The Seat Left Open",
+    text: paragraphs([
+      "Booth 3 has one empty chair.",
+      "No one sits in it. The table screen turns on anyway.",
+      "Director Vale appears live, hands folded, voice low enough to sound like concern.",
+    ]),
+    speaker: "Director Vale",
+    dialogue: "You have built a sanctuary out of secrets. I am offering one built out of guarantees.",
+    reads: [
+      "Vale Mood: Calm, reasonable, almost kind.",
+      "Body Read: Every civilian reacts to the word guarantee differently.",
+    ],
+    cards: [
+      {
+        name: "Director Vale",
+        mood: "Final Offer",
+        read: "They are not asking to win. They are asking to be called necessary.",
+      },
+      {
+        name: "Mara",
+        mood: "Quiet Fury",
+        read: "She lets Vale speak because everyone deserves to hear the shape of the bargain.",
+      },
+    ],
+    choices: [
+      {
+        text: "Let Vale state the bargain.",
+        next: "shift7_coded_order",
+        effects: {
+          stats: { logic: 1, risk: 1 },
+          flags: { privacy_bargain_seen: true },
+        },
+        response: "The room holds still around the screen.",
+      },
+      {
+        text: "Ask who keeps the guarantees honest.",
+        next: "shift7_coded_order",
+        effects: {
+          stats: { independence: 1, logic: 1 },
+          flags: { found_all_names_list: true },
+        },
+        response: "Vale smiles like the question was rehearsed. Perhaps it was.",
+      },
+      {
+        text: "Watch the civilians instead of Vale.",
+        next: "shift7_coded_order",
+        effects: {
+          stats: { social_read: 2 },
+          flags: { civilians_gathered: true },
+        },
+        response: "Nobody in the room agrees on fear. That feels important.",
+      },
+    ],
+  },
+
+  shift7_coded_order: {
+    type: "scene",
+    title: "Everyone's Usual",
+    speaker: "Mara",
+    dialogue: "Last Call for Privacy. Everyone's usual. No names.",
+    text: paragraphs([
+      "Mara gives the order herself.",
+      "The bar answers with every glass it has learned to keep quiet: ramen smoke, orchid frost, redacted tabs, candle wax, blank cards, dead router lights.",
+      "Vale watches it all like a parent watching a child insist on a smaller world.",
+    ]),
+    reads: [
+      "Codebook: Last Call for Privacy means the house is choosing what it exists to protect.",
+      "Codebook: Everyone's usual means each person gets the kind of safety they can live with.",
+      "Codebook: No names means the record must not own the people inside it.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Openly Defiant",
+        read: "She is asking you to serve the whole room, not just the house.",
+      },
+      {
+        name: "Director Vale",
+        mood: "Patient",
+        read: "They hear privacy and translate it into unmanaged risk.",
+      },
+    ],
+    choices: [
+      {
+        text: "Write the order as spoken.",
+        next: "shift7_civilians_enter",
+        effects: {
+          stats: { trust: 1, logic: 1 },
+          hidden: { house_trust: 1 },
+        },
+        response: "The order looks impossible and familiar.",
+      },
+      {
+        text: "Ask whether anyone can opt in by name.",
+        next: "shift7_civilians_enter",
+        effects: {
+          stats: { logic: 1, mercy: 1 },
+          flags: { final_consent_taken: true },
+        },
+        response: "Theo nods once. Tally shakes their head. Both answers matter.",
+      },
+      {
+        text: "Keep the order off every receipt.",
+        next: "shift7_civilians_enter",
+        effects: {
+          stats: { independence: 1, mercy: 1 },
+          hidden: { harmony_attention: -1 },
+          flags: { house_future_private: true },
+        },
+        response: "The printer clicks, offended by being excluded from history.",
+      },
+    ],
+  },
+
+  shift7_civilians_enter: {
+    type: "scene",
+    title: "The Room Answers",
+    text: paragraphs([
+      "Nobody new enters. That is the complication.",
+      "Every civilian you protected or failed to protect is already here in some form: story, witness, absence, bruise.",
+      "Vale offers them a list on the screen: names, routes, safe contacts, alerts, guarantees. Some of it would help. That is the cruel part.",
+    ]),
+    speaker: "Director Vale",
+    dialogue: "Privacy did not save them. People did. I can make people faster.",
+    reads: [
+      "Nia and Jules Mood: Holding hands under the table.",
+      "Theo Mood: Wanting choice more than comfort.",
+      "Pax Mood: Watching the word help like it might bite.",
+    ],
+    cards: [
+      {
+        name: "The Civilians",
+        mood: "Not A Category",
+        read: "They do not all want the same safety. That is the problem with one bargain.",
+      },
+      {
+        name: "Director Vale",
+        mood: "Almost Persuasive",
+        read: "They are using real fear. That is why the offer works.",
+      },
+      {
+        name: "Mara",
+        mood: "Listening",
+        read: "She will not answer for the room if the room can answer.",
+      },
+    ],
+    choices: [
+      {
+        text: "Ask the room who wants Vale's list.",
+        next: "shift7_confusion",
+        effects: {
+          stats: { mercy: 1, trust: 1 },
+          flags: { final_consent_taken: true },
+        },
+        response: "The answers do not line up. That is the first honest vote of the night.",
+      },
+      {
+        text: "Ask Vale what happens to people who say no.",
+        next: "shift7_confusion",
+        effects: {
+          stats: { logic: 1, risk: 1 },
+          flags: { found_all_names_list: true },
+        },
+        response: "Vale says they remain free. Nobody likes the pause after free.",
+      },
+      {
+        text: "Let the offer sit and watch who reaches first.",
+        next: "shift7_confusion",
+        effects: {
+          stats: { risk: 1, social_read: 1 },
+          hidden: { heat: 1, harmony_attention: 1 },
+          flags: { privacy_bargain_seen: true },
+        },
+        response: "The person who reaches first is not a coward. That makes it harder.",
+      },
+    ],
+  },
+
+  shift7_confusion: {
+    type: "scene",
+    title: "The List",
+    text: paragraphs([
+      "The screen blooms into a roster of everyone Sugar Shack has shielded.",
+      "Some names are wrong. Some names are old. Some blanks are more intimate than signatures.",
+      "Vale says: I can keep this from being used against them. Mara says nothing, because the lie is not simple.",
+    ]),
+    reads: [
+      "Wrong-List Problem: The roster could protect people and also become the thing that endangers them.",
+      "Civilian Risk: Consent cannot be averaged across a frightened room.",
+    ],
+    cards: [
+      {
+        name: "Nia and Jules",
+        mood: "Remembering",
+        read: "A joke drink became a life they almost did not know they needed protected.",
+      },
+      {
+        name: "Theo and Rook",
+        mood: "Complicated",
+        read: "They know records can restore agency and steal it.",
+      },
+      {
+        name: "Vera and Pax",
+        mood: "Opposite Needs",
+        read: "Proof and privacy are looking at each other across the same table.",
+      },
+      {
+        name: "Penny",
+        mood: "By The Breaker",
+        read: "They can cut the room dark if you ask.",
+      },
+    ],
+    choices: [
+      {
+        text: "Take two limited reads before the final pour.",
+        next: "shift7_snoop_menu",
+      },
+    ],
+  },
+
+  shift7_snoop_menu: {
+    type: "snoopMenu",
+    title: "Read the Last Call",
+    text: "Choose what to inspect or ask. You have time for two reads before Vale turns the offer into policy.",
+    cards: [
+      {
+        name: "Mara",
+        mood: "Letting Go",
+        read: "She knows the house cannot be a sanctuary if only she gets to define safety.",
+      },
+      {
+        name: "Director Vale",
+        mood: "Reasonable",
+        read: "They are not hiding the cost. They are hoping fear makes it look affordable.",
+      },
+      {
+        name: "The Room",
+        mood: "Alive",
+        read: "Nobody is noise anymore.",
+      },
+    ],
+    options: [
+      {
+        text: "Inspect Vale's full roster",
+        response: "The roster includes protected civilians, staff routes, erased names, and three blanks labeled probable.",
+        effects: {
+          stats: { logic: 1 },
+          flags: { found_all_names_list: true, found_civilian_roster: true },
+        },
+      },
+      {
+        text: "Check the consent column",
+        response: "Most entries are blank. A few are guessed. One is marked consent inferred from gratitude.",
+        effects: {
+          stats: { logic: 1, mercy: 1 },
+          hidden: { harmony_attention: 1 },
+          flags: { final_consent_taken: true, found_civilian_roster: true },
+        },
+      },
+      {
+        text: "Read Mara",
+        response: "Mara wants to refuse for everyone. She is forcing herself not to. That restraint costs more than anger.",
+        effects: {
+          stats: { social_read: 1, trust: 1 },
+          flags: { mara_final_warning: true },
+        },
+      },
+      {
+        text: "Read the civilians",
+        response: "Some want help now. Some want privacy later. Some want both and hate that the room makes them choose.",
+        effects: {
+          stats: { mercy: 1, social_read: 1 },
+          flags: { civilians_gathered: true },
+        },
+      },
+      {
+        text: "Ask Mara with your eyes",
+        response: "Mara opens her hand over the bar: do not save privacy by stealing choice.",
+        effects: {
+          stats: { trust: 1, social_read: 1 },
+          hidden: { house_trust: 1 },
+          flags: { mara_final_warning: true },
+        },
+      },
+      {
+        text: "Listen to the Singer",
+        response: "The Singer performs without words. Everyone supplies a different lyric and nobody is wrong.",
+        effects: {
+          stats: { social_read: 2 },
+          flags: { singer_final_warning: true },
+        },
+      },
+      {
+        text: "Ask for names only from people who speak them",
+        response: "The room answers unevenly. That unevenness is consent, not failure.",
+        effects: {
+          stats: { mercy: 1, logic: 1 },
+          hidden: { civilian_safety: 1 },
+          flags: { final_consent_taken: true, returns_protected: true },
+        },
+      },
+      {
+        text: "Do not interfere yet",
+        response: "You let the bargain sit in the open. Fear moves first. Then shame. Then, finally, anger.",
+        effects: {
+          stats: { risk: 1, social_read: 1 },
+          hidden: { heat: 1, harmony_attention: 1 },
+          flags: { privacy_bargain_seen: true },
+        },
+        endSnooping: true,
+      },
+    ],
+    nextWhenDone: "shift7_convergence",
+  },
+
+  shift7_convergence: {
+    type: "scene",
+    title: "Vale's Bargain",
+    speaker: "Director Vale",
+    dialogue: "Give me the roster and I will make sure no one in this room disappears without alarm.",
+    text: paragraphs([
+      "There it is: not a threat, not exactly.",
+      "A bargain good enough to tempt the people it would harm.",
+      "Mara looks at you. So does everyone else. For once, the house is not the only thing waiting.",
+    ]),
+    reads: [
+      "Vale Mood: Certain that fear wants a manager.",
+      "Mara Mood: Asking you not to confuse secrecy with consent.",
+      "Room Mood: Split, scared, alive.",
+    ],
+    cards: [
+      {
+        name: "Director Vale",
+        mood: "Final",
+        read: "Their offer is safety through permanent memory.",
+      },
+      {
+        name: "Mara",
+        mood: "Open",
+        read: "She has given you the room. Now you have to answer to it.",
+      },
+      {
+        name: "The Room",
+        mood: "Noisy Inside",
+        read: "There is no clean consensus. There are only people.",
+      },
+    ],
+    choices: [
+      {
+        text: "Give each person one sentence before last call.",
+        next: "shift7_host_signal",
+        effects: {
+          stats: { mercy: 1, trust: 1 },
+          hidden: { civilian_safety: 1 },
+          flags: { final_consent_taken: true, returns_protected: true },
+        },
+        response: "It takes too long. It is the first thing all night that takes the right amount of time.",
+      },
+      {
+        text: "Ask Vale to define disappearance.",
+        next: "shift7_host_signal",
+        effects: {
+          stats: { logic: 1, risk: 1 },
+          flags: { found_all_names_list: true },
+        },
+        response: "Vale says absence without record. Theo flinches. Pax whispers: record for who?",
+      },
+      {
+        text: "Let Penny put one finger on the breaker.",
+        next: "shift7_host_signal",
+        effects: {
+          stats: { independence: 1, social_read: 1 },
+          flags: { last_call_blackout: true },
+        },
+        response: "The room notices the option. Vale notices everyone noticing.",
+      },
+    ],
+  },
+
+  shift7_host_signal: {
+    type: "scene",
+    title: "Everyone's Glass",
+    text: paragraphs([
+      "Mara lines up every glass the week taught you to fear.",
+      "No two are the same. No two should be.",
+      "The roster glows on Vale's screen. Penny waits by the breaker. The Singer holds the last note without releasing it.",
+      "Serve. Alter. Delay. Refuse.",
+    ]),
+    reads: [
+      "Mara Mood: Letting the final choice belong to more than the house.",
+      "Final Read: Vale offers safety. Sugar Shack offers privacy. The room needs choice.",
+    ],
+    cards: [
+      {
+        name: "Mara",
+        mood: "Ready",
+        read: "She will live with the answer. That does not mean it will not cost her.",
+      },
+      {
+        name: "Director Vale",
+        mood: "Still",
+        read: "They believe all refusal is fear of accountability.",
+      },
+      {
+        name: "Everyone Else",
+        mood: "Human",
+        read: "They are not a data set. They are a roomful of unfinished answers.",
+      },
+    ],
+    choices: [
+      {
+        text: "Pour last call.",
+        next: "shift7_final_decision",
+      },
+    ],
+  },
+
+  shift7_final_decision: {
+    type: "scene",
+    title: "Last Call: Privacy",
+    text: "The week has narrowed to one roster, one bargain, one breaker, and everyone who was never supposed to know how much danger they were in.",
+    reads: [
+      "Spy Question: What happens to the roster?",
+      "Human Question: Can safety be real if people cannot refuse it?",
+      "House Mood: Waiting to see whether you serve certainty, alter the bargain, delay for consent, or refuse the premise.",
+    ],
+    cards: [
+      {
+        name: "Director Vale",
+        mood: "Offering",
+        read: "They may even believe this is mercy.",
+      },
+      {
+        name: "Mara",
+        mood: "At The Edge",
+        read: "She taught you the verbs. She cannot choose yours.",
+      },
+      {
+        name: "The Civilians",
+        mood: "Present",
+        read: "The week was never about keeping them innocent. It was about letting them remain people.",
+      },
+    ],
+    choices: [
+      {
+        text: "Serve - accept Vale's bargain and hand over the roster.",
+        next: "result_privacy_served",
+        effects: {
+          stats: { logic: 2, trust: 1 },
+          hidden: { harmony_attention: 2, heat: 1, civilian_safety: 1 },
+          flags: { privacy_final_served: true, vale_offer_accepted: true, house_future_watched: true },
+        },
+      },
+      {
+        text: "Alter - give Vale only opt-in names and false routes.",
+        next: "result_privacy_altered",
+        effects: {
+          stats: { mercy: 1, logic: 1, social_read: 1 },
+          hidden: { civilian_safety: 2, house_trust: 1, harmony_attention: -1 },
+          flags: { privacy_final_altered: true, final_consent_taken: true, decoy_leak_sent: true, returns_protected: true, house_future_private: true },
+        },
+      },
+      {
+        text: "Delay - keep the roster sealed until everyone can choose later.",
+        next: "result_privacy_delayed",
+        effects: {
+          stats: { mercy: 1, social_read: 2, risk: 1 },
+          hidden: { civilian_safety: 1, heat: 1, house_trust: 1 },
+          flags: { privacy_final_delayed: true, final_consent_taken: true, returns_protected: true },
+        },
+      },
+      {
+        text: "Refuse - cut the lights and destroy the roster.",
+        next: "result_privacy_refused",
+        effects: {
+          stats: { independence: 2, mercy: 1, risk: 1 },
+          hidden: { civilian_safety: 2, heat: 2, venue_stability: -1 },
+          flags: { privacy_final_refused: true, vale_offer_refused: true, last_call_blackout: true, house_future_private: true, returns_protected: true },
+        },
+      },
+    ],
+  },
+
+  result_privacy_served: {
+    type: "result",
+    endingLabel: "Guaranteed House",
+    text: paragraphs([
+      "You serve the bargain.",
+      "Vale receives the roster and speaks each promise with a precision that almost sounds like prayer.",
+      "No one in the room disappears that night. No one in the room is unrecorded again.",
+      "Mara closes Sugar Shack with the lights still on.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_privacy_altered: {
+    type: "result",
+    endingLabel: "Opt-In Ghosts",
+    text: paragraphs([
+      "You give Vale a roster made of consent, decoys, and doors that lead to rooms Sugar Shack stopped using years ago.",
+      "The people who asked to be found are findable. The people who asked to vanish stay difficult.",
+      "Vale calls it incomplete. Mara calls it human.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_privacy_delayed: {
+    type: "result",
+    endingLabel: "Sealed Last Call",
+    text: paragraphs([
+      "You seal the roster in the receipt printer and refuse the deadline.",
+      "Vale does not get an answer tonight. Neither does the house.",
+      "The room leaves with homework instead of safety. Somehow that feels less dishonest.",
+    ]),
+    next: "receipt_debrief",
+  },
+
+  result_privacy_refused: {
+    type: "result",
+    endingLabel: "Private Blackout",
+    text: paragraphs([
+      "Penny cuts the breaker. You pour the roster into darkness.",
+      "When the lights return, Vale is gone, the list is ash, and everyone is still frighteningly mortal.",
+      "Mara opens the upstairs door before sunrise. Sugar Shack smells like smoke, sugar, and choice.",
     ]),
     next: "receipt_debrief",
   },
